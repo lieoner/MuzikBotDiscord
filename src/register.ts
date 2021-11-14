@@ -39,7 +39,7 @@ const guildId = specifiedCommandArgs[1] || undefined;
     const commands: unknown[] = [];
 
     commands.push({
-        name: 'muzik',
+        name: 'help_me_muzik',
         description: 'Print help',
     });
 

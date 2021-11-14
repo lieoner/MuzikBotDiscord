@@ -10,7 +10,7 @@ import {
 
 export class HelpCommand extends DiscordCommand {
     constructor() {
-        super('muzik');
+        super('help_me_muzik');
     }
 
     async executeInteraction(
