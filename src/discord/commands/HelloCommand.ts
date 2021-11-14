@@ -1,5 +1,5 @@
 import { Client } from 'discord.js-light';
-import { enqueueSound, getRandomSound } from '../../muzik/HelloHandler';
+import { helloHandler } from '../../muzik/HelloHandler';
 import { config } from '../../utils/Configuration';
 import { DiscordCommand } from '../DiscordCommand';
 import {
@@ -64,7 +64,7 @@ export class HelloCommand extends DiscordCommand {
                 false
             );
         }
-        const sound = getRandomSound();
+        const sound = helloHandler.getRandomSound();
         if (!sound) {
             return discordCommandResponder.sendBackMessage(
                 'Да я ниче играть буду, я не могу вспомнить.',
@@ -82,6 +82,14 @@ export class HelloCommand extends DiscordCommand {
                 name: 'hello',
             }),
         });
+        buttons.push({
+            type: 2,
+            style: 2,
+            label: 'вежливо скипнуть',
+            custom_id: JSON.stringify({
+                name: 'skip',
+            }),
+        });
         const fullComponents = convertButtonsIntoButtonGrid(buttons);
         discordCommandResponder.sendBackMessage(
             'Играет привет от Русланчика',
@@ -89,6 +97,6 @@ export class HelloCommand extends DiscordCommand {
             fullComponents
         );
 
-        enqueueSound(voiceChannel, sound.sound);
+        helloHandler.enqueueSound(voiceChannel, sound.sound);
     }
 }

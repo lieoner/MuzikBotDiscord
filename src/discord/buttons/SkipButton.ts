@@ -4,9 +4,9 @@ import { config } from '../../utils/Configuration';
 import { DiscordButton } from '../DiscordButton';
 import { ComponentInteraction, DiscordCommandResponder } from '../DiscordInteraction';
 
-export class HelloButton extends DiscordButton {
+export class SkipButton extends DiscordButton {
     constructor() {
-        super('hello');
+        super('skip');
     }
 
     async executeInteraction(
@@ -57,19 +57,16 @@ export class HelloButton extends DiscordButton {
                 false
             );
         }
-        const sound = helloHandler.getRandomSound();
-        if (!sound) {
-            return discordCommandResponder.sendBackMessage(
-                'Да я ниче играть буду, я не могу вспомнить.',
+
+        const helloQueue = helloHandler.getGuildQueue(voiceChannel.guild.id);
+        if (helloQueue.length > 0) {
+            discordCommandResponder.sendBackMessage(
+                'Я промолчу, но запомню... :middle_finger:',
                 false
             );
+            return helloHandler.skipSound(voiceChannel.guild.id);
         }
 
-        discordCommandResponder.sendBackMessage(
-            'Вот еще приветик от Рустамчика :smiling_imp:',
-            false
-        );
-
-        helloHandler.enqueueSound(voiceChannel, sound.sound);
+        return discordCommandResponder.sendBackMessage('Да все уже, я все сказал.', false);
     }
 }

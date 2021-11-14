@@ -33,6 +33,6 @@ export class HelpButton extends DiscordButton {
         }
 
         // Run the command
-        return discordCommandResponder.sendBackMessage('Уже все, раньше надо было?', false);
+        return discordCommandResponder.sendBackMessage('Уже все, раньше надо было...', false);
     }
 }
