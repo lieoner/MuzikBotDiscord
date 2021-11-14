@@ -9,6 +9,7 @@ interface Configuration {
             muzik: string;
         };
     };
+    youtube: { token: string };
 
     web: {
         port: number;

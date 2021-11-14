@@ -9,6 +9,10 @@ import { HelpButton } from './discord/buttons/HelpButton';
 import { HelpCommand } from './discord/commands/HelpCommand';
 import { HelloCommand } from './discord/commands/HelloCommand';
 import { HelloButton } from './discord/buttons/HelloButton';
+import { SkipButton } from './discord/buttons/SkipButton';
+import { MuzikCommand } from './discord/commands/MuzikCommand';
+import { QuitButton } from './discord/buttons/QueueButton';
+import { InfoCommand } from './discord/commands/InfoCommand';
 
 export class MuzikBot {
     public readonly client: Client;
@@ -40,10 +44,14 @@ export class MuzikBot {
         // Register commands
         this.registerCommand(new HelpCommand());
         this.registerCommand(new HelloCommand());
+        this.registerCommand(new MuzikCommand());
+        this.registerCommand(new InfoCommand());
 
         // Register buttons
         this.registerButton(new HelpButton());
         this.registerButton(new HelloButton());
+        this.registerButton(new SkipButton());
+        this.registerButton(new QuitButton());
     }
 
     async start(): Promise<void> {

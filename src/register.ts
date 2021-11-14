@@ -47,6 +47,23 @@ const guildId = specifiedCommandArgs[1] || undefined;
         name: 'hello',
         description: 'Поздороваюсь с тобой за сотку (100)',
     });
+    commands.push({
+        name: 'info',
+        description: 'расскажу че почем',
+    });
+
+    commands.push({
+        name: 'muzik',
+        description: 'Поищу на ютубе',
+        options: [
+            {
+                type: 3,
+                name: 'link',
+                description: 'введи ссылку или название',
+                options: [],
+            },
+        ],
+    });
 
     const response = await fetch(
         'https://discord.com/api/v8/applications/' +

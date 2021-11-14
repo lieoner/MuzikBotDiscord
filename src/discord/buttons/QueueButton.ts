@@ -1,13 +1,12 @@
 import { Client } from 'discord.js-light';
-import { helloHandler } from '../../muzik/HelloHandler';
 import { muzikHandler } from '../../muzik/MuzikHandler';
 import { config } from '../../utils/Configuration';
 import { DiscordButton } from '../DiscordButton';
 import { ComponentInteraction, DiscordCommandResponder } from '../DiscordInteraction';
 
-export class SkipButton extends DiscordButton {
+export class QuitButton extends DiscordButton {
     constructor() {
-        super('skip');
+        super('queue');
     }
 
     async executeInteraction(
@@ -59,21 +58,18 @@ export class SkipButton extends DiscordButton {
             );
         }
 
-        const helloQueue = helloHandler.getGuildQueue(voiceChannel.guild.id);
-        if (!!helloQueue && helloQueue.length > 0) {
-            discordCommandResponder.sendBackMessage(
-                'Я промолчу, но запомню... :middle_finger:',
-                false
-            );
-            return helloHandler.skipSound(voiceChannel.guild.id);
-        }
-
         const muzikQueue = muzikHandler.getGuildQueue(voiceChannel.guild.id);
         if (muzikQueue && muzikQueue.length > 0) {
-            discordCommandResponder.sendBackMessage('Ясно, а твое мы до конца слушали...', true);
-            return muzikHandler.skipSound(voiceChannel.guild.id);
+            let formattedQueueInfo = '';
+            muzikQueue.forEach((item, index) => {
+                formattedQueueInfo += `${index + 1}. **${item.videoInfo.videoDetails.title}**\n`;
+            });
+            return discordCommandResponder.sendBackMessage(
+                'В очереди сейчас это:\n' + formattedQueueInfo,
+                true
+            );
         }
 
-        return discordCommandResponder.sendBackMessage('Да все уже, я все сказал.', false);
+        return discordCommandResponder.sendBackMessage('В очереди ничего нет, добавь ДОРУ)', false);
     }
 }

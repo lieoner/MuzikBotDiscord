@@ -1,23 +1,27 @@
 import { Client } from 'discord.js-light';
-import { helloHandler } from '../../muzik/HelloHandler';
 import { muzikHandler } from '../../muzik/MuzikHandler';
 import { config } from '../../utils/Configuration';
-import { DiscordButton } from '../DiscordButton';
-import { ComponentInteraction, DiscordCommandResponder } from '../DiscordInteraction';
+import { DiscordCommand } from '../DiscordCommand';
+import {
+    CommandInteraction,
+    convertButtonsIntoButtonGrid,
+    DiscordCommandResponder,
+    DiscordComponent,
+} from '../DiscordInteraction';
 
-export class SkipButton extends DiscordButton {
+export class InfoCommand extends DiscordCommand {
     constructor() {
-        super('skip');
+        super('info');
     }
 
     async executeInteraction(
         client: Client,
-        interaction: ComponentInteraction,
+        interaction: CommandInteraction,
         discordCommandResponder: DiscordCommandResponder
     ): Promise<void> {
         // Make sure they are in a guild
         if (!interaction.member || !interaction.guild_id) {
-            return discordCommandResponder.sendBackMessage('Че ты сюда пишешь клоун.', false);
+            return discordCommandResponder.sendBackMessage('Нахуй ты сюда пишешь клоун.', false);
         }
         if (!client.guilds.cache.has(interaction.guild_id)) {
             return discordCommandResponder.sendBackMessage('Где я?', false);
@@ -33,6 +37,8 @@ export class SkipButton extends DiscordButton {
         if (!botGuildMember) {
             return discordCommandResponder.sendBackMessage('Я знать тебя не знаю...', false);
         }
+
+        // Run the command
 
         const voiceChannel = guildMember.voice.channel;
         if (!voiceChannel) {
@@ -59,21 +65,35 @@ export class SkipButton extends DiscordButton {
             );
         }
 
-        const helloQueue = helloHandler.getGuildQueue(voiceChannel.guild.id);
-        if (!!helloQueue && helloQueue.length > 0) {
-            discordCommandResponder.sendBackMessage(
-                'Я промолчу, но запомню... :middle_finger:',
-                false
-            );
-            return helloHandler.skipSound(voiceChannel.guild.id);
-        }
+        const queueInfo = muzikHandler.getGuildQueue(voiceChannel.guild.id);
 
-        const muzikQueue = muzikHandler.getGuildQueue(voiceChannel.guild.id);
-        if (muzikQueue && muzikQueue.length > 0) {
-            discordCommandResponder.sendBackMessage('Ясно, а твое мы до конца слушали...', true);
-            return muzikHandler.skipSound(voiceChannel.guild.id);
-        }
+        const infoText =
+            queueInfo.length > 0 ? `В очереди ${queueInfo.length} треков` : 'В очереди нет ничего';
 
-        return discordCommandResponder.sendBackMessage('Да все уже, я все сказал.', false);
+        const buttons: DiscordComponent[] = [];
+
+        if (queueInfo.length > 0) {
+            buttons.push({
+                type: 2,
+                style: 3,
+                label: 'ОЧЕРЕДЬ',
+                custom_id: JSON.stringify({
+                    name: 'queue',
+                }),
+            });
+            buttons.push({
+                type: 2,
+                style: 4,
+                label: 'СКИП',
+                custom_id: JSON.stringify({
+                    name: 'skip',
+                }),
+            });
+        }
+        const fullComponents = convertButtonsIntoButtonGrid(buttons);
+
+        if (infoText.length > 0) {
+            discordCommandResponder.sendBackMessage(infoText, true, fullComponents);
+        }
     }
 }
