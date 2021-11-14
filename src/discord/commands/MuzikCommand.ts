@@ -78,7 +78,9 @@ export class MuzikCommand extends DiscordCommand {
 
         const infoText =
             `Добавлено в очередь: [${info.videoDetails.title}](${info.videoDetails.video_url})\n` +
-            (queueInfo.length > 0 ? `В очереди ${queueInfo.length} треков` : '');
+            (queueInfo.length > 0
+                ? `В очереди ${queueInfo.length + 1} видео`
+                : `В очереди 1 видео`);
 
         const buttons: DiscordComponent[] = [];
 
