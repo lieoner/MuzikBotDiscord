@@ -15,7 +15,7 @@ export class HelpButton extends DiscordButton {
     ): Promise<void> {
         // Make sure they are in a guild
         if (!interaction.member || !interaction.guild_id) {
-            return discordCommandResponder.sendBackMessage('Нахуй ты сюда пишешь клоун.', false);
+            return discordCommandResponder.sendBackMessage('Че ты сюда пишешь клоун.', false);
         }
         if (!client.guilds.cache.has(interaction.guild_id)) {
             return discordCommandResponder.sendBackMessage('Где я?', false);
@@ -33,6 +33,6 @@ export class HelpButton extends DiscordButton {
         }
 
         // Run the command
-        return discordCommandResponder.sendBackMessage('Отвали а?', false);
+        return discordCommandResponder.sendBackMessage('Уже все, раньше надо было?', false);
     }
 }

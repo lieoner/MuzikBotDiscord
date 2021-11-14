@@ -40,7 +40,12 @@ const guildId = specifiedCommandArgs[1] || undefined;
 
     commands.push({
         name: 'help_me_muzik',
-        description: 'Print help',
+        description: 'Проси помощи',
+    });
+
+    commands.push({
+        name: 'hello',
+        description: 'Поздороваюсь с тобой за сотку (100)',
     });
 
     const response = await fetch(

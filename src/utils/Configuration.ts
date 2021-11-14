@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs';
+import { readFileSync, readdirSync } from 'fs';
 
 interface Configuration {
     discord: {
@@ -40,3 +40,4 @@ interface Configuration {
 }
 
 export const config: Configuration = JSON.parse(readFileSync('./config.json').toString());
+export const playlist = readdirSync('./playlist');

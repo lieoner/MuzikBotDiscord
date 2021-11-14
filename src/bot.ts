@@ -7,6 +7,8 @@ import { DiscordCommand } from './discord/DiscordCommand';
 import { DiscordButton } from './discord/DiscordButton';
 import { HelpButton } from './discord/buttons/HelpButton';
 import { HelpCommand } from './discord/commands/HelpCommand';
+import { HelloCommand } from './discord/commands/HelloCommand';
+import { HelloButton } from './discord/buttons/HelloButton';
 
 export class MuzikBot {
     public readonly client: Client;
@@ -37,9 +39,11 @@ export class MuzikBot {
 
         // Register commands
         this.registerCommand(new HelpCommand());
+        this.registerCommand(new HelloCommand());
 
         // Register buttons
         this.registerButton(new HelpButton());
+        this.registerButton(new HelloButton());
     }
 
     async start(): Promise<void> {

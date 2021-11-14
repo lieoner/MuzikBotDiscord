@@ -1,6 +1,7 @@
-import { DiscordCommand } from '../DiscordCommand';
 import { Client } from 'discord.js-light';
+import { enqueueSound, getRandomSound } from '../../muzik/HelloHandler';
 import { config } from '../../utils/Configuration';
+import { DiscordCommand } from '../DiscordCommand';
 import {
     CommandInteraction,
     convertButtonsIntoButtonGrid,
@@ -8,9 +9,9 @@ import {
     DiscordComponent,
 } from '../DiscordInteraction';
 
-export class HelpCommand extends DiscordCommand {
+export class HelloCommand extends DiscordCommand {
     constructor() {
-        super('help_me_muzik');
+        super('hello');
     }
 
     async executeInteraction(
@@ -38,21 +39,56 @@ export class HelpCommand extends DiscordCommand {
         }
 
         // Run the command
+
+        const voiceChannel = guildMember.voice.channel;
+        if (!voiceChannel) {
+            return discordCommandResponder.sendBackMessage('В войс зайди, заебал, дон.', false);
+        }
+        let fetchedVoiceChannel;
+        try {
+            fetchedVoiceChannel = await client.channels.fetch(voiceChannel.id, {
+                withOverwrites: true,
+            });
+        } catch (e) {
+            return discordCommandResponder.sendBackMessage(
+                'Круто троллишь, я зайти не могу.',
+                false
+            );
+        }
+        if (!fetchedVoiceChannel) {
+            return discordCommandResponder.sendBackMessage('В войс зайди, заебал, дон.', false);
+        }
+        if (!botGuildMember.permissionsIn(fetchedVoiceChannel).has('CONNECT')) {
+            return discordCommandResponder.sendBackMessage(
+                'Круто троллишь, я зайти не могу.',
+                false
+            );
+        }
+        const sound = getRandomSound();
+        if (!sound) {
+            return discordCommandResponder.sendBackMessage(
+                'Да я ниче играть буду, я не могу вспомнить.',
+                false
+            );
+        }
+
         const buttons: DiscordComponent[] = [];
 
         buttons.push({
             type: 2,
             style: 3,
-            label: 'Попросить с уважением',
+            label: 'еще можно приветик?)',
             custom_id: JSON.stringify({
-                name: 'help',
+                name: 'hello',
             }),
         });
         const fullComponents = convertButtonsIntoButtonGrid(buttons);
-        return discordCommandResponder.sendBackMessage(
-            'Ты просишь, но просишь без уважения',
+        discordCommandResponder.sendBackMessage(
+            'Играет привет от Русланчика',
             true,
             fullComponents
         );
+
+        enqueueSound(voiceChannel, sound.sound);
     }
 }
