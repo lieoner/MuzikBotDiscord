@@ -39,6 +39,19 @@ const guildId = specifiedCommandArgs[1] || undefined;
     const commands: unknown[] = [];
 
     commands.push({
+        name: 'muzik',
+        description: 'Поищу на ютубе',
+        options: [
+            {
+                type: 3,
+                name: 'link',
+                description: 'введи ссылку или название',
+                options: [],
+            },
+        ],
+    });
+
+    commands.push({
         name: 'help_me_muzik',
         description: 'Проси помощи',
     });
@@ -50,19 +63,6 @@ const guildId = specifiedCommandArgs[1] || undefined;
     commands.push({
         name: 'info',
         description: 'расскажу че почем',
-    });
-
-    commands.push({
-        name: 'muzik',
-        description: 'Поищу на ютубе',
-        options: [
-            {
-                type: 3,
-                name: 'link',
-                description: 'введи ссылку или название',
-                options: [],
-            },
-        ],
     });
 
     const response = await fetch(
