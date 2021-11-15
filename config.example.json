@@ -1,0 +1,24 @@
+{
+    "discord": {
+        "applicationId": "your_id",
+        "botId": "your_id",
+        "token": "your_token"
+    },
+    "youtube": {
+        "token": "your_youtube_api_token"
+    },
+    "web": {
+        "port": 8082,
+        "hostStatic": true,
+        "staticDirectory": "../website/dist"
+    },
+    "redis": {
+        "host": "127.0.0.1",
+        "port": 6379,
+        "password": "1",
+        "prefix": "muzik"
+    },
+    "settings": {
+        "maxQueueSize": 5
+    }
+}
